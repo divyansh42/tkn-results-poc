@@ -33,7 +33,7 @@ NAME	UID	STARTED	DURATION	STATUS
 {{ end -}}{{- end -}}{{- end -}}
 {{- end -}}`
 
-func GetPRCommand() *cobra.Command {
+func PrCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "pr",
 		Short: "Get all PipelineRuns in the namespace",

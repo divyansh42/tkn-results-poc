@@ -2,15 +2,15 @@ package get
 
 import "github.com/spf13/cobra"
 
-func NewGetCommand() *cobra.Command {
+func Command() *cobra.Command {
 	getCmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get Tekton resources",
 	}
 
 	getCmd.AddCommand(
-		GetPRCommand(),
-		GetTRCommand(),
+		PrCommand(),
+		TrCommand(),
 	)
 
 	return getCmd

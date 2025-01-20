@@ -3,6 +3,7 @@ package pkg
 import (
 	"fmt"
 	"github.com/divyansh42/tkn-results/pkg/cmd/get"
+	"github.com/divyansh42/tkn-results/pkg/cmd/logs"
 	"github.com/spf13/cobra"
 	"os"
 	"strings"
@@ -46,7 +47,8 @@ func Root() *cobra.Command {
 	rootCmd.PersistentFlags().StringVar(&token, "token", "", "API token")
 
 	rootCmd.AddCommand(
-		get.NewGetCommand(),
+		get.Command(),
+		logs.Command(),
 	)
 
 	return rootCmd

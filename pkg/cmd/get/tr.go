@@ -33,7 +33,7 @@ NAME	UID	STARTED	DURATION	STATUS
 {{ end -}}{{- end -}}{{- end -}}
 {{- end -}}`
 
-func GetTRCommand() *cobra.Command {
+func TrCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "tr",
 		Short: "Get all TaskRuns in the namespace",
