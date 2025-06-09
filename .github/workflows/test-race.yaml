@@ -42,7 +42,7 @@ jobs:
       - name: Setup Tekton Pipelines and CLI
         uses: openshift-pipelines/setup-tektoncd@v1
         with:
-          pipeline_version: latest
+          pipeline_version: v0.70.0
           cli_version: latest
           setup_registry: "true"
           patch_etc_hosts: "true"
