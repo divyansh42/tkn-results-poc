@@ -55,7 +55,7 @@ jobs:
               - name: SLEEP_SECONDS
                 type: string
                 description: How many seconds to sleep after echoing
-                default: "10"
+                default: "30"
             steps:
               - name: echo
                 image: ubuntu
@@ -85,7 +85,7 @@ jobs:
                     - name: MESSAGE
                       value: "This is the first task."
                     - name: SLEP_SECONDS
-                      value: "5"
+                      value: "10"
 
                 - name: second-task
                   taskRef:
@@ -94,7 +94,7 @@ jobs:
                     - name: MESSAGE
                       value: "This is the second task, a bit longer."
                     - name: SLEEP_SECONDS
-                      value: "15"
+                      value: "30"
                   runAfter:
                     - first-task
 
@@ -105,7 +105,7 @@ jobs:
                     - name: MESSAGE
                       value: "This is the third task, a long one."
                     - name: SLEEP_SECONDS
-                      value: "60"
+                      value: "180"
                   runAfter:
                     - second-task
           EOF
