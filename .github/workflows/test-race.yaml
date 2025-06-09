@@ -1,4 +1,3 @@
-# .github/workflows/reproduce_tkn_hang.yaml
 name: Reproduce TKN Logs Hang
 
 on:
@@ -16,36 +15,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22' # Use a recent Go version if tkn needs it
-
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
         with:
           version: 'v1.28.0' # Or desired kubectl version
 
-      - name: Install Kind
+      - name: Install tkn CLI
         run: |
-          # For AMD64
-          [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-          # For ARM64
-          [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
-          chmod +x ./kind
-          sudo mv ./kind /usr/local/bin/kind
-          kind version
+          curl -LO https://github.com/tektoncd/cli/releases/download/v0.41.0/tektoncd-cli-0.41.0_Linux-64bit.deb
+          sudo dpkg -i tektoncd-cli-0.41.0_Linux-64bit.deb
+          rm tektoncd-cli-0.41.0_Linux-64bit.deb
+          tkn version
 
-      - name: Create Kind cluster
-        run: kind create cluster --name tekton-test
-
-      - name: Setup Tekton Pipelines and CLI
-        uses: openshift-pipelines/setup-tektoncd@v1
+      - name: Log in to OpenShift Cluster
+        uses: redhat-actions/oc-login@v1
         with:
-          pipeline_version: v0.70.0
-          cli_version: latest
-          setup_registry: "true"
-          patch_etc_hosts: "true"
+          openshift_server_url: ${{ secrets.OC_SERVER_URL }}
+          openshift_token: ${{ secrets.OC_TOKEN }}
+          insecure_skip_tls_verify: true # Adjust as per your cluster's TLS setup, remove if not needed
 
       - name: Create Tekton Resources (Task, Pipeline, PipelineRun)
         run: |
@@ -71,7 +58,7 @@ jobs:
                   echo "Starting step 'echo': $(params.MESSAGE)"
               - name: sleep
                 image: ubuntu
-                script: |
+                script: | 
                   #!/bin/bash
                   echo "Starting step 'sleep' for $(params.SLEEP_SECONDS) seconds..."
                   sleep $(params.SLEEP_SECONDS)
@@ -129,43 +116,3 @@ jobs:
           )
           echo "PIPELINERUN_NAME=$PIPELINERUN_NAME" >> $GITHUB_ENV
           echo "Started PipelineRun: $PIPELINERUN_NAME"
-
-      - name: Follow PipelineRun logs and check for hang
-        run: |
-          # Run tkn logs in background and capture its PID
-          tkn pipelinerun logs --exit-with-pipelinerun-error -f "$PIPELINERUN_NAME" > konflux_tasks_logs.txt 2>&1 &
-          TKN_PID=$!
-          echo "tkn logs process started with PID: $TKN_PID"
-
-          # Wait for a reasonable time, e.g., 2 minutes beyond expected pipeline run duration
-          # The pipeline takes 5 + 15 + 60 = 80 seconds. Let's wait 120 seconds.
-          WAIT_TIME=120
-          echo "Waiting for $WAIT_TIME seconds for the pipelinerun to complete and tkn to exit..."
-          sleep $WAIT_TIME
-
-          # Check if the tkn process is still running
-          if ps -p $TKN_PID > /dev/null
-          then
-             echo "Error: tkn pipelinerun logs command is still running (hung) after $WAIT_TIME seconds!"
-             echo "Process details:"
-             ps -fp $TKN_PID
-             echo "Captured logs so far:"
-             cat konflux_tasks_logs.txt
-             # Attempt to get final pipelinerun status from kubectl
-             echo "Final PipelineRun status from kubectl:"
-             kubectl get pipelinerun "$PIPELINERUN_NAME"
-             # Kill the hung process to allow the job to terminate
-             kill $TKN_PID
-             exit 1 # Fail the job
-          else
-             echo "tkn pipelinerun logs command exited successfully."
-             echo "Final logs:"
-             cat konflux_tasks_logs.txt
-             # Verify actual PipelineRun status from kubectl
-             echo "Final PipelineRun status from kubectl:"
-             kubectl get pipelinerun "$PIPELINERUN_NAME"
-          fi
-
-      - name: Clean up Kind cluster
-        if: always() # Run cleanup even if previous steps fail
-        run: kind delete cluster --name tekton-test

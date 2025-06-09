@@ -1,6 +1,8 @@
 package get
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+)
 
 func Command() *cobra.Command {
 	getCmd := &cobra.Command{
@@ -10,7 +12,7 @@ func Command() *cobra.Command {
 
 	getCmd.AddCommand(
 		PrCommand(),
-		TrCommand(),
+		//TrCommand(),
 	)
 
 	return getCmd

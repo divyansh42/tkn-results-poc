@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/divyansh42/tkn-results/pkg/cli"
-	"github.com/divyansh42/tkn-results/pkg/records"
+	"github.com/divyansh42/tkn-results/pkg/cmd/config"
 	"github.com/jonboulle/clockwork"
 	"github.com/spf13/cobra"
 	"github.com/tektoncd/cli/pkg/formatted"
@@ -33,44 +33,88 @@ NAME	UID	STARTED	DURATION	STATUS
 {{ end -}}{{- end -}}{{- end -}}
 {{- end -}}`
 
-func PrCommand() *cobra.Command {
-	return &cobra.Command{
-		Use:   "pr",
-		Short: "Get all PipelineRuns in the namespace",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			namespace, _ := cmd.Flags().GetString("namespace")
-			server, _ := cmd.Flags().GetString("server")
-			token, _ := cmd.Flags().GetString("token")
-			records, err := records.GetRecords(namespace, server, token)
-			if err != nil {
-				return err
-			}
-
-			prs := getPipelineRuns(records)
-
-			stream := &cli.Stream{
-				Out: cmd.OutOrStdout(),
-				Err: cmd.OutOrStderr(),
-			}
-
-			if prs != nil {
-				err = printFormattedPr(stream, prs, clockwork.NewRealClock(), false, false)
-			}
-			if err != nil {
-				return fmt.Errorf("failed to print PipelineRuns: %v", err)
-			}
-
-			return nil
-		},
-	}
+type Options struct {
+	Client    *cli.RESTClient
+	Namespace string
 }
 
+func PrCommand() *cobra.Command {
+	o := &Options{}
+	c := &cobra.Command{
+		Use:     "pr",
+		Short:   "Get all PipelineRuns in the namespace",
+		PreRunE: o.PreRun,
+		RunE:    o.Run,
+		//RunE: func(cmd *cobra.Command, args []string) error {
+		//	namespace, _ := cmd.Flags().GetString("namespace")
+		//	server, _ := cmd.Flags().GetString("server")
+		//	token, _ := cmd.Flags().GetString("token")
+		//	records, err := records.GetRecords(namespace, server, token)
+		//	if err != nil {
+		//		return err
+		//	}
+		//
+		//	prs := getPipelineRuns(records)
+		//
+		//	stream := &cli.Stream{
+		//		Out: cmd.OutOrStdout(),
+		//		Err: cmd.OutOrStderr(),
+		//	}
+		//
+		//	if prs != nil {
+		//		err = printFormattedPr(stream, prs, clockwork.NewRealClock(), false, false)
+		//	}
+		//	if err != nil {
+		//		return fmt.Errorf("failed to print PipelineRuns: %v", err)
+		//	}
+		//
+		//	return nil
+		//},
+	}
+	return c
+}
+
+func (o *Options) PreRun(_ *cobra.Command, args []string) (err error) {
+	c, err := config.NewConfig()
+	if err != nil {
+		return err
+	}
+	o.Client, err = cli.NewRESTClient(c.Get())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Options) Run(cmd *cobra.Command, args []string) (err error) {
+	namespace, _ := cmd.Flags().GetString("namespace")
+	records, err := o.Client.GetRecords(namespace)
+	if err != nil {
+		return err
+	}
+
+	prs := getPipelineRuns(records)
+
+	stream := &cli.Stream{
+		Out: cmd.OutOrStdout(),
+		Err: cmd.OutOrStderr(),
+	}
+
+	if prs != nil {
+		err = printFormattedPr(stream, prs, clockwork.NewRealClock(), false, false)
+	}
+	if err != nil {
+		return fmt.Errorf("failed to print PipelineRuns: %v", err)
+	}
+
+	return nil
+}
 func getPipelineRuns(records []*pb.Record) *v1.PipelineRunList {
 	var pipelineRuns = new(v1.PipelineRunList)
 
 	for _, record := range records {
 		var pr v1.PipelineRun
-		if record.Data.Type == "tekton.dev/v1.PipelineRun" {
+		if record.Data.Type == "tekton.dev/v1.PipelineRun" || record.Data.Type == "tekton.dev/v1beta1.PipelineRun" {
 			if err := json.Unmarshal(record.Data.Value, &pr); err != nil {
 				log.Fatalf("Failed to unmarshal JSON: %v", err)
 			}

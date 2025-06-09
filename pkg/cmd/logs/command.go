@@ -9,7 +9,7 @@ func Command() *cobra.Command {
 	}
 
 	logsCmd.AddCommand(
-		TrCommand(),
+	//TrCommand(),
 	)
 
 	return logsCmd

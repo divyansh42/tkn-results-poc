@@ -1,6 +1,8 @@
 package cli
 
-import "io"
+import (
+	"io"
+)
 
 type Stream struct {
 	In  io.Reader
