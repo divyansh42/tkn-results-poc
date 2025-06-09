@@ -28,10 +28,10 @@ jobs:
 
       - name: Install tkn CLI
         run: |
-          curl -LO https://github.com/tektoncd/cli/releases/download/v0.48.0/tektoncd-cli-0.48.0_Linux-64bit.deb
-          sudo dpkg -i tektoncd-cli-0.48.0_Linux-64bit.deb
-          rm tektoncd-cli-0.48.0_Linux-64bit.deb
-          tkn version
+          curl -LO https://github.com/tektoncd/cli/releases/download/v0.41.0/tektoncd-cli-0.41.0_Linux-64bit.deb
+          sudo dpkg -i tektoncd-cli-0.41.0_Linux-64bit.deb
+          rm tektoncd-cli-0.41.0_Linux-64bit.deb
+          tkn version 
 
       - name: Install Kind
         run: |
