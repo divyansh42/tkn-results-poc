@@ -20,11 +20,18 @@ jobs:
         with:
           version: 'v1.28.0' # Or desired kubectl version
 
-      - name: Install OpenShift and Tekton CLIs
+      - name: Install OpenShift CLI
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: 'latest'
-          tkn: '0.41.0'
+
+      - name: Install tkn CLI
+        run: |
+          curl -LO https://github.com/tektoncd/cli/releases/download/v0.41.0/tektoncd-cli-0.41.0_Linux-64bit.deb
+          sudo dpkg -i tektoncd-cli-0.41.0_Linux-64bit.deb
+          rm tektoncd-cli-0.41.0_Linux-64bit.deb
+          tkn version
+
 
       - name: Log in to OpenShift Cluster
         uses: redhat-actions/oc-login@v1
