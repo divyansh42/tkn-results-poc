@@ -26,13 +26,6 @@ jobs:
         with:
           version: 'v1.28.0' # Or desired kubectl version
 
-      - name: Install tkn CLI
-        run: |
-          curl -LO https://github.com/tektoncd/cli/releases/download/v0.41.0/tektoncd-cli-0.41.0_Linux-64bit.deb
-          sudo dpkg -i tektoncd-cli-0.41.0_Linux-64bit.deb
-          rm tektoncd-cli-0.41.0_Linux-64bit.deb
-          tkn version 
-
       - name: Install Kind
         run: |
           # For AMD64
@@ -46,18 +39,13 @@ jobs:
       - name: Create Kind cluster
         run: kind create cluster --name tekton-test
 
-      - name: Install Tekton Pipelines on Kind
-        run: |
-          kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
-          echo "Waiting for Tekton Pipelines pods to be ready (up to 10 minutes)..."
-          kubectl wait --for=condition=ready pod --all --timeout=10m -n tekton-pipelines || \
-            (echo "Tekton Pipelines pods did not become ready. Diagnostic information:"; \
-            kubectl get pods -n tekton-pipelines -o wide; \
-            for pod in $(kubectl get pods -n tekton-pipelines -o jsonpath='{.items[*].metadata.name}'); do \
-              echo "--- Describe pod $pod ---"; \
-              kubectl describe pod $pod -n tekton-pipelines; \
-            done; \
-            exit 1) 
+      - name: Setup Tekton Pipelines and CLI
+        uses: openshift-pipelines/setup-tektoncd@v1
+        with:
+          pipeline_version: latest
+          cli_version: latest
+          setup_registry: "true"
+          patch_etc_hosts: "true"
 
       - name: Create Tekton Resources (Task, Pipeline, PipelineRun)
         run: |
@@ -96,37 +84,37 @@ jobs:
           metadata:
             name: long-running-pipeline
           spec:
-            tasks:
-              - name: first-task
-                taskRef:
-                  name: echo-and-sleep
-                params:
-                  - name: MESSAGE
-                    value: "This is the first task."
-                  - name: SLEEP_SECONDS
-                    value: "5"
+              tasks:
+                - name: first-task
+                  taskRef:
+                    name: echo-and-sleep
+                  params:
+                    - name: MESSAGE
+                      value: "This is the first task."
+                    - name: SLEP_SECONDS
+                      value: "5"
 
-              - name: second-task
-                taskRef:
-                  name: echo-and-sleep
-                params:
-                  - name: MESSAGE
-                    value: "This is the second task, a bit longer."
-                  - name: SLEEP_SECONDS
-                    value: "15"
-                runAfter:
-                  - first-task
+                - name: second-task
+                  taskRef:
+                    name: echo-and-sleep
+                  params:
+                    - name: MESSAGE
+                      value: "This is the second task, a bit longer."
+                    - name: SLEEP_SECONDS
+                      value: "15"
+                  runAfter:
+                    - first-task
 
-              - name: third-task
-                taskRef:
-                  name: echo-and-sleep
-                params:
-                  - name: MESSAGE
-                    value: "This is the third task, a long one."
-                  - name: SLEEP_SECONDS
-                    value: "60"
-                runAfter:
-                  - second-task
+                - name: third-task
+                  taskRef:
+                    name: echo-and-sleep
+                  params:
+                    - name: MESSAGE
+                      value: "This is the third task, a long one."
+                    - name: SLEEP_SECONDS
+                      value: "60"
+                  runAfter:
+                    - second-task
           EOF
 
           PIPELINERUN_NAME=$(kubectl apply -f - -o jsonpath='{.metadata.name}' <<EOF
