@@ -61,13 +61,13 @@ jobs:
                 image: ubuntu
                 script: |
                   #!/bin/bash
-                  echo "Starting step 'echo': $(params.MESSAGE)"
+                  echo "Starting step 'echo': \\$(params.MESSAGE)"
               - name: sleep
                 image: ubuntu
                 script: | 
                   #!/bin/bash
-                  echo "Starting step 'sleep' for $(params.SLEEP_SECONDS) seconds..."
-                  sleep $(params.SLEEP_SECONDS)
+                  echo "Starting step 'sleep' for \\$(params.SLEEP_SECONDS) seconds..."
+                  sleep \\$(params.SLEEP_SECONDS)
                   echo "Finished sleeping."
           EOF
 
@@ -110,7 +110,7 @@ jobs:
                     - second-task
           EOF
 
-          PIPELINERUN_NAME=$(kubectl apply -f - -o jsonpath='{.metadata.name}' <<EOF
+          PIPELINERUN_NAME=$(kubectl create -f - -o jsonpath='{.metadata.name}' <<EOF
           apiVersion: tekton.dev/v1beta1
           kind: PipelineRun
           metadata:
