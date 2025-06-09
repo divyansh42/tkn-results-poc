@@ -122,3 +122,8 @@ jobs:
           )
           echo "PIPELINERUN_NAME=$PIPELINERUN_NAME" >> $GITHUB_ENV
           echo "Started PipelineRun: $PIPELINERUN_NAME"
+
+      - name: Follow PipelineRun Logs
+        run: |
+          echo "Waiting for PipelineRun $PIPELINERUN_NAME to complete and streaming logs..."
+          tkn pipelinerun logs --exit-with-pipelinerun-error -f "$PIPELINERUN_NAME"
