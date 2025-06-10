@@ -1,0 +1,264 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://github.com/openshift-pipelines/operator?rev=c111f73d16ea6273d1ce71cb5cccc848647d845a
+    build.appstudio.redhat.com/commit_sha: c111f73d16ea6273d1ce71cb5cccc848647d845a
+    build.appstudio.redhat.com/pull_request_number: "2521"
+    build.appstudio.redhat.com/target_branch: next
+    chains.tekton.dev/signed: "true"
+    pac.test.appstudio.openshift.io/branch: next
+    pac.test.appstudio.openshift.io/cancel-in-progress: "true"
+    pac.test.appstudio.openshift.io/check-run-id: "38081795662"
+    pac.test.appstudio.openshift.io/controller-info: '{"name":"default","configmap":"pipelines-as-code","secret":"pipelines-as-code-secret",
+      "gRepo": "pipelines-as-code"}'
+    pac.test.appstudio.openshift.io/event-type: pull_request
+    pac.test.appstudio.openshift.io/git-auth-secret: pac-gitauth-nbeovn
+    pac.test.appstudio.openshift.io/git-provider: github
+    pac.test.appstudio.openshift.io/installation-id: "34496476"
+    pac.test.appstudio.openshift.io/log-url: https://console.redhat.com/application-pipeline/ns/tekton-ecosystem-tenant/pipelinerun/operator-next-operator-on-pull-request-spnkz
+    pac.test.appstudio.openshift.io/max-keep-runs: "3"
+    pac.test.appstudio.openshift.io/on-cel-expression: event == "pull_request" &&
+      target_branch == "next" && ("upstream/***".pathChanged() || ".konflux/patches/***".pathChanged()
+      || ".konflux/rpms/***".pathChanged() || ".konflux/dockerfiles/operator.Dockerfile".pathChanged()
+      || ".tekton/operator-next-operator-pull-request.yaml".pathChanged())
+    pac.test.appstudio.openshift.io/original-prname: operator-next-operator-on-pull-request
+    pac.test.appstudio.openshift.io/pipeline: https://raw.githubusercontent.com/openshift-pipelines/operator/refs/heads/main/.tekton/docker-build-ta.yaml
+    pac.test.appstudio.openshift.io/pull-request: "2521"
+    pac.test.appstudio.openshift.io/repo-url: https://github.com/openshift-pipelines/operator
+    pac.test.appstudio.openshift.io/repository: openshift-pipelines-bundle
+    pac.test.appstudio.openshift.io/sender: github-actions[bot]
+    pac.test.appstudio.openshift.io/sha: c111f73d16ea6273d1ce71cb5cccc848647d845a
+    pac.test.appstudio.openshift.io/sha-title: '[bot] Update next from tektoncd/operator
+      to 687d8102997390275e038e33691844d4e227e359'
+    pac.test.appstudio.openshift.io/sha-url: https://github.com/openshift-pipelines/operator/commit/c111f73d16ea6273d1ce71cb5cccc848647d845a
+    pac.test.appstudio.openshift.io/source-branch: actions/update/sources-next
+    pac.test.appstudio.openshift.io/source-repo-url: https://github.com/openshift-pipelines/operator
+    pac.test.appstudio.openshift.io/state: completed
+    pac.test.appstudio.openshift.io/url-org: openshift-pipelines
+    pac.test.appstudio.openshift.io/url-repository: operator
+    results.tekton.dev/childReadyForDeletion: "true"
+    results.tekton.dev/record: tekton-ecosystem-tenant/results/9b43c19a-238f-4200-aef1-ab7a6101aea6/records/9b43c19a-238f-4200-aef1-ab7a6101aea6
+    results.tekton.dev/result: tekton-ecosystem-tenant/results/9b43c19a-238f-4200-aef1-ab7a6101aea6
+    results.tekton.dev/stored: "true"
+    test.appstudio.openshift.io/create-groupsnapshot-status: Group snapshot tekton-ecosystem-tenant/operator-next-wrd59
+      is created for pr group actions/update/sources-next
+    test.appstudio.openshift.io/pipelinerunstarttime: "1740986319"
+    test.appstudio.openshift.io/pr-group: actions/update/sources-next
+    test.appstudio.openshift.io/snapshot-creation-report: BuildPLRInProgress
+    test.appstudio.openshift.io/source-repo-url: https://github.com/openshift-pipelines/operator
+    test.appstudio.openshift.io/status: '[{"scenario":"operator-next-enterprise-contract","status":"Pending","lastUpdateTime":"2025-03-03T07:24:22.118893202Z","details":"Pending"}]'
+  creationTimestamp: "2025-03-03T07:24:22Z"
+  deletionGracePeriodSeconds: 0
+  deletionTimestamp: "2025-03-03T07:46:05Z"
+  finalizers:
+  - results.tekton.dev/pipelinerun
+  generateName: operator-next-enterprise-contract-
+  generation: 2
+  labels:
+    appstudio.openshift.io/application: operator-next
+    appstudio.openshift.io/component: operator-next-operator
+    appstudio.openshift.io/snapshot: operator-next-99tdj
+    build.appstudio.redhat.com/pipeline: enterprise-contract
+    pac.test.appstudio.openshift.io/check-run-id: "38081795662"
+    pac.test.appstudio.openshift.io/event-type: pull_request
+    pac.test.appstudio.openshift.io/original-prname: operator-next-operator-on-pull-request
+    pac.test.appstudio.openshift.io/pull-request: "2521"
+    pac.test.appstudio.openshift.io/repository: openshift-pipelines-bundle
+    pac.test.appstudio.openshift.io/sha: c111f73d16ea6273d1ce71cb5cccc848647d845a
+    pac.test.appstudio.openshift.io/state: completed
+    pac.test.appstudio.openshift.io/url-org: openshift-pipelines
+    pac.test.appstudio.openshift.io/url-repository: operator
+    pipelines.appstudio.openshift.io/type: test
+    tekton.dev/pipeline: enterprise-contract
+    test.appstudio.openshift.io/optional: "true"
+    test.appstudio.openshift.io/pipelinerunfinishtime: "1740986652"
+    test.appstudio.openshift.io/pr-group-sha: 3fea7b8d24c0884bf08828db997563051dafead56728aa0568f326071a64c3
+    test.appstudio.openshift.io/scenario: operator-next-enterprise-contract
+    test.appstudio.openshift.io/type: component
+  name: operator-next-enterprise-contract-bgwb9
+  namespace: tekton-ecosystem-tenant
+  ownerReferences:
+  - apiVersion: appstudio.redhat.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Snapshot
+    name: operator-next-99tdj
+    uid: 07bdc249-66db-4359-829e-7c93e12c1673
+  resourceVersion: "3311934952"
+  uid: 9b43c19a-238f-4200-aef1-ab7a6101aea6
+spec:
+  params:
+  - name: SNAPSHOT
+    value: '{"application":"operator-next","components":[{"name":"operator-next-proxy","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-proxy-rhel9@sha256:8f6e520e51dba3b5da0e8cdfa74ff057d56a97593a9f961dfe02e38a5da3e627","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"7b5a15f192e9f37aada7f4025ed4133ae88cecff","dockerfileUrl":".konflux/dockerfiles/proxy.Dockerfile"}}},{"name":"operator-next-webhook","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-webhook-rhel9@sha256:f4979f30e19b36b7d29a148aadd3d28b4263744f7d5838f1eed4c0c199e1d046","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"7b5a15f192e9f37aada7f4025ed4133ae88cecff","dockerfileUrl":".konflux/dockerfiles/webhook.Dockerfile"}}},{"name":"operator-next-bundle","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-bundle-rhel9@sha256:69112e09014816162495955befe6d1fb5a69bba203eda222f5f487637c0164ec","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"0de539d3a8ed67db55fdbbf144df6949732dcdfe","dockerfileUrl":".konflux/olm-catalog/bundle/Dockerfile"}}},{"name":"operator-next-index-4-15","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.15@sha256:7bd2c370790376a096c53ef3db36aeb3cfdc14c0a5d9edf4a5b00ac1aa310cbf","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"3fc79f63578767964a4e971b5328eaa504701814","dockerfileUrl":".konflux/olm-catalog/openshift-pipelines/index/v4-15/Dockerfile.catalog"}}},{"name":"operator-next-index-4-16","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.16@sha256:e92b69e54af4d7349e4612bc0e13484d2264ab6093d06a7f3d7bfd203c57d8cd","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"3fc79f63578767964a4e971b5328eaa504701814","dockerfileUrl":".konflux/olm-catalog/openshift-pipelines/index/v4.16/Dockerfile.catalog"}}},{"name":"operator-next-index-4-17","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.17@sha256:74fa0bbc39d0729ab35eb434d37f38cf3ee6baa23c25b82784e732a1f364d5cf","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"1a0639db241ca96b2b46c0768b07468f3515ee31","dockerfileUrl":".konflux/olm-catalog/openshift-pipelines/index/v4.17/Dockerfile.catalog"}}},{"name":"operator-next-index-4-18","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.18@sha256:445cc172936c02f6c5184ebb1eebd60796117945a015e527badf6d09c6182da8","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"1a0639db241ca96b2b46c0768b07468f3515ee31","dockerfileUrl":".konflux/olm-catalog/index/v4.18/Dockerfile.catalog"}}},{"name":"operator-next-operator","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-operator-rhel9@sha256:ca2a469cfea8300ddcf1be27e2e583b1341228ea9691185798b7c537ce84bd0f","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"c111f73d16ea6273d1ce71cb5cccc848647d845a"}}}],"artifacts":{}}'
+  - name: POLICY_CONFIGURATION
+    value: tekton-ecosystem-tenant/tekton-ecosystem-tenant-containers
+  - name: TIMEOUT
+    value: 15m0s
+  - name: SINGLE_COMPONENT
+    value: "true"
+  pipelineRef:
+    params:
+    - name: url
+      value: https://github.com/konflux-ci/build-definitions
+    - name: revision
+      value: main
+    - name: pathInRepo
+      value: pipelines/enterprise-contract.yaml
+    resolver: git
+  taskRunTemplate:
+    podTemplate:
+      nodeSelector:
+        konflux-ci.dev/workload: konflux-tenants
+      tolerations:
+      - effect: NoSchedule
+        key: konflux-ci.dev/workload
+        operator: Equal
+        value: konflux-tenants
+    serviceAccountName: appstudio-pipeline
+  timeouts:
+    finally: 2h0m0s
+    pipeline: 6h0m0s
+    tasks: 4h0m0s
+status:
+  childReferences:
+  - apiVersion: tekton.dev/v1
+    kind: TaskRun
+    name: operator-next-enterprise-contract-bgwb9-verify
+    pipelineTaskName: verify
+  completionTime: "2025-03-03T07:24:48Z"
+  conditions:
+  - lastTransitionTime: "2025-03-03T07:24:48Z"
+    message: 'Tasks Completed: 1 (Failed: 0, Cancelled 0), Skipped: 0'
+    reason: Succeeded
+    status: "True"
+    type: Succeeded
+  pipelineSpec:
+    params:
+    - description: |
+        Spec section of an ApplicationSnapshot resource. Not all fields of the
+        resource are required. A minimal example:
+          {
+            "components": [
+              {
+                "containerImage": "quay.io/example/repo:latest"
+              }
+            ]
+          }
+        Each "containerImage" in the "components" array is validated.
+      name: SNAPSHOT
+      type: string
+    - default: enterprise-contract-service/default
+      description: |
+        Name of the policy configuration (EnterpriseContractConfiguration
+        object) to use. `namespace/name` or `name` syntax supported. If
+        namespace is omitted the namespace where the task runs is used.
+      name: POLICY_CONFIGURATION
+      type: string
+    - default: ""
+      description: |
+        Path to a directory containing SSL certs to be used when communicating
+        with external services. This is useful when using the integrated registry
+        and a local instance of Rekor on a development cluster which may use
+        certificates issued by a not-commonly trusted root CA. In such cases,
+        "/var/run/secrets/kubernetes.io/serviceaccount" is a good value. Multiple
+        paths can be provided by using the ":" separator.
+      name: SSL_CERT_DIR
+      type: string
+    - default: k8s://openshift-pipelines/public-key
+      description: |
+        Public key used to verify signatures. Must be a valid k8s cosign
+        reference, e.g. k8s://my-space/my-secret where my-secret contains
+        the expected cosign.pub attribute.
+      name: PUBLIC_KEY
+      type: string
+    - default: 5m0s
+      description: Timeout setting for `ec validate`.
+      name: TIMEOUT
+      type: string
+    - default: "1"
+      description: Number of parallel workers to use for policy evaluation.
+      name: WORKERS
+      type: string
+    - default: trusted-ca
+      description: The name of the ConfigMap to read CA bundle data from.
+      name: CA_TRUST_CONFIGMAP_NAME
+      type: string
+    - default: ca-bundle.crt
+      description: The name of the key in the ConfigMap that contains the CA bundle
+        data.
+      name: CA_TRUST_CONFIG_MAP_KEY
+      type: string
+    - default: ""
+      description: Merge additional Rego variables into the policy data. Use syntax
+        "key=value,key2=value2..."
+      name: EXTRA_RULE_DATA
+      type: string
+    - default: "false"
+      description: Reduce the Snapshot to only the component whose build caused the
+        Snapshot to be created
+      name: SINGLE_COMPONENT
+      type: string
+    - default: pr/$(context.pipelineRun.name)
+      description: PipelineRun ID
+      name: SINGLE_COMPONENT_CUSTOM_RESOURCE
+      type: string
+    - default: "true"
+      description: |
+        A boolean flag that determines whether the result of the test will mark the TaskRun as passing or not.
+        Swap to false to make the IntegrationTestScenario informative.
+
+        Setting to false is useful on specific conditions but will always mark the integration test as successful and
+        humans will tend to ignore the test results if they failed. Use with caution.
+      name: STRICT
+      type: string
+    results:
+    - description: ""
+      name: TEST_OUTPUT
+      value: $(tasks.verify.results.TEST_OUTPUT)
+    tasks:
+    - name: verify
+      params:
+      - name: POLICY_CONFIGURATION
+        value: tekton-ecosystem-tenant/tekton-ecosystem-tenant-containers
+      - name: IMAGES
+        value: '{"application":"operator-next","components":[{"name":"operator-next-proxy","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-proxy-rhel9@sha256:8f6e520e51dba3b5da0e8cdfa74ff057d56a97593a9f961dfe02e38a5da3e627","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"7b5a15f192e9f37aada7f4025ed4133ae88cecff","dockerfileUrl":".konflux/dockerfiles/proxy.Dockerfile"}}},{"name":"operator-next-webhook","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-webhook-rhel9@sha256:f4979f30e19b36b7d29a148aadd3d28b4263744f7d5838f1eed4c0c199e1d046","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"7b5a15f192e9f37aada7f4025ed4133ae88cecff","dockerfileUrl":".konflux/dockerfiles/webhook.Dockerfile"}}},{"name":"operator-next-bundle","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-bundle-rhel9@sha256:69112e09014816162495955befe6d1fb5a69bba203eda222f5f487637c0164ec","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"0de539d3a8ed67db55fdbbf144df6949732dcdfe","dockerfileUrl":".konflux/olm-catalog/bundle/Dockerfile"}}},{"name":"operator-next-index-4-15","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.15@sha256:7bd2c370790376a096c53ef3db36aeb3cfdc14c0a5d9edf4a5b00ac1aa310cbf","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"3fc79f63578767964a4e971b5328eaa504701814","dockerfileUrl":".konflux/olm-catalog/openshift-pipelines/index/v4-15/Dockerfile.catalog"}}},{"name":"operator-next-index-4-16","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.16@sha256:e92b69e54af4d7349e4612bc0e13484d2264ab6093d06a7f3d7bfd203c57d8cd","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"3fc79f63578767964a4e971b5328eaa504701814","dockerfileUrl":".konflux/olm-catalog/openshift-pipelines/index/v4.16/Dockerfile.catalog"}}},{"name":"operator-next-index-4-17","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.17@sha256:74fa0bbc39d0729ab35eb434d37f38cf3ee6baa23c25b82784e732a1f364d5cf","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"1a0639db241ca96b2b46c0768b07468f3515ee31","dockerfileUrl":".konflux/olm-catalog/openshift-pipelines/index/v4.17/Dockerfile.catalog"}}},{"name":"operator-next-index-4-18","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/operator-next/index-4.18@sha256:445cc172936c02f6c5184ebb1eebd60796117945a015e527badf6d09c6182da8","source":{"git":{"url":"https://github.com/openshift-pipelines/operator.git","revision":"1a0639db241ca96b2b46c0768b07468f3515ee31","dockerfileUrl":".konflux/olm-catalog/index/v4.18/Dockerfile.catalog"}}},{"name":"operator-next-operator","containerImage":"quay.io/redhat-user-workloads/tekton-ecosystem-tenant/next/operator-operator-rhel9@sha256:ca2a469cfea8300ddcf1be27e2e583b1341228ea9691185798b7c537ce84bd0f","source":{"git":{"url":"https://github.com/openshift-pipelines/operator","revision":"c111f73d16ea6273d1ce71cb5cccc848647d845a"}}}],"artifacts":{}}'
+      - name: SSL_CERT_DIR
+        value: ""
+      - name: STRICT
+        value: "true"
+      - name: PUBLIC_KEY
+        value: k8s://openshift-pipelines/public-key
+      - name: IGNORE_REKOR
+        value: "true"
+      - name: TIMEOUT
+        value: 15m0s
+      - name: WORKERS
+        value: "1"
+      - name: CA_TRUST_CONFIGMAP_NAME
+        value: trusted-ca
+      - name: CA_TRUST_CONFIG_MAP_KEY
+        value: ca-bundle.crt
+      - name: EXTRA_RULE_DATA
+        value: ""
+      - name: SINGLE_COMPONENT
+        value: "true"
+      - name: SINGLE_COMPONENT_CUSTOM_RESOURCE
+        value: pr/operator-next-enterprise-contract-bgwb9
+      taskRef:
+        params:
+        - name: bundle
+          value: quay.io/enterprise-contract/ec-task-bundle:snapshot@sha256:3a77cc4a82e45bc9ddbbef622c5d272c1d3ec91c9e1452a739dd94e1d6418974
+        - name: name
+          value: verify-enterprise-contract
+        - name: kind
+          value: task
+        resolver: bundles
+      timeout: 4h0m0s
+  results:
+  - name: TEST_OUTPUT
+    value: |
+      {"timestamp":"1740986685","namespace":"","successes":215,"failures":0,"warnings":32,"result":"WARNING"}
+  spanContext:
+    traceparent: 00-87ce990a257b4c2bb5ddf25b99364a01-59650c482d7554f1-01
+  startTime: "2025-03-03T07:24:22Z"
