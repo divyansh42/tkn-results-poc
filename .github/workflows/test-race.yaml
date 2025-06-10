@@ -85,7 +85,7 @@ jobs:
                     - name: MESSAGE
                       value: "This is the first task."
                     - name: SLEP_SECONDS
-                      value: "10"
+                      value: "300"
 
                 - name: second-task
                   taskRef:
@@ -94,7 +94,7 @@ jobs:
                     - name: MESSAGE
                       value: "This is the second task, a bit longer."
                     - name: SLEEP_SECONDS
-                      value: "30"
+                      value: "300"
                   runAfter:
                     - first-task
 
@@ -105,7 +105,7 @@ jobs:
                     - name: MESSAGE
                       value: "This is the third task, a long one."
                     - name: SLEEP_SECONDS
-                      value: "180"
+                      value: "300"
                   runAfter:
                     - second-task
           EOF
