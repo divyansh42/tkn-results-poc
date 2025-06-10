@@ -42,7 +42,7 @@ jobs:
 
       - name: Create Tekton Resources (Task, Pipeline, PipelineRun)
         run: |
-          cat <<EOF | kubectl apply -f -
+          cat <<'EOF' | kubectl apply -f -
           apiVersion: tekton.dev/v1beta1
           kind: Task
           metadata:
@@ -61,10 +61,10 @@ jobs:
                 image: ubuntu
                 script: |
                   #!/bin/bash
-                  echo "Starting step 'echo': $TASK_MESSAGE"
+                  echo "Starting step echo: $TASK_MESSAGE"
                 env:
                   - name: TASK_MESSAGE
-                    value: "\$(params.MESSAGE)"
+                    value: "$(params.MESSAGE)"
               - name: sleep
                 image: ubuntu
                 script: | 
@@ -74,10 +74,10 @@ jobs:
                   echo "Finished sleeping."
                 env:
                   - name: SLEEP_DURATION
-                    value: "\$(params.SLEEP_SECONDS)"
-          EOF
+                    value: "$(params.SLEEP_SECONDS)"
+          'EOF'
 
-          cat <<EOF | kubectl apply -f -
+          cat <<'EOF' | kubectl apply -f -
           apiVersion: tekton.dev/v1beta1
           kind: Pipeline
           metadata:
@@ -90,8 +90,8 @@ jobs:
                   params:
                     - name: MESSAGE
                       value: "This is the first task."
-                    - name: SLEP_SECONDS
-                      value: "30"
+                    - name: SLEEP_SECONDS
+                      value: "300"
 
                 - name: second-task
                   taskRef:
@@ -114,9 +114,9 @@ jobs:
                       value: "300"
                   runAfter:
                     - second-task
-          EOF
+          'EOF'
 
-          PIPELINERUN_NAME=$(kubectl create -f - -o jsonpath='{.metadata.name}' <<EOF
+          PIPELINERUN_NAME=$(kubectl create -f - -o jsonpath='{.metadata.name}' <<'EOF'
           apiVersion: tekton.dev/v1beta1
           kind: PipelineRun
           metadata:
