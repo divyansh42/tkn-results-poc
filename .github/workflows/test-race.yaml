@@ -61,7 +61,10 @@ jobs:
                 image: ubuntu
                 script: |
                   #!/bin/bash
-                  echo "Starting step 'echo': \\$(params.MESSAGE)"
+                  echo "Starting step 'echo': $TASK_MESSAGE"
+                env:
+                  - name: TASK_MESSAGE
+                    value: "$(params.MESSAGE)"
               - name: sleep
                 image: ubuntu
                 script: | 
