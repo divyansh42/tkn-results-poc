@@ -64,7 +64,7 @@ jobs:
                   echo "Starting step 'echo': $TASK_MESSAGE"
                 env:
                   - name: TASK_MESSAGE
-                    value: "$(params.MESSAGE)"
+                    value: "\$(params.MESSAGE)"
               - name: sleep
                 image: ubuntu
                 script: | 
@@ -74,7 +74,7 @@ jobs:
                   echo "Finished sleeping."
                 env:
                   - name: SLEEP_DURATION
-                    value: "$(params.SLEEP_SECONDS)"
+                    value: "\$(params.SLEEP_SECONDS)"
           EOF
 
           cat <<EOF | kubectl apply -f -
