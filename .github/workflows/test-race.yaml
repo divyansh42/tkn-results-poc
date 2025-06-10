@@ -69,9 +69,12 @@ jobs:
                 image: ubuntu
                 script: | 
                   #!/bin/bash
-                  echo "Starting step 'sleep' for \\$(params.SLEEP_SECONDS) seconds..."
-                  sleep \\$(params.SLEEP_SECONDS)
+                  echo "Starting step 'sleep' for $SLEEP_DURATION seconds..."
+                  sleep $SLEEP_DURATION
                   echo "Finished sleeping."
+                env:
+                  - name: SLEEP_DURATION
+                    value: "$(params.SLEEP_SECONDS)"
           EOF
 
           cat <<EOF | kubectl apply -f -
