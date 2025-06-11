@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: echo-and-sleep
+spec:
+  params:
+    - name: MESSAGE
+      type: string
+      description: The message to echo
+    - name: SLEEP_SECONDS
+      type: string
+      description: How many seconds to sleep after echoing
+      default: "300"
+  steps:
+    - name: echo
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Starting step echo: $(params.MESSAGE)"
+      env:
+        - name: TASK_MESSAGE
+          value: "$(params.MESSAGE)"
+    - name: sleep
+      image: ubuntu
+      script: | 
+        #!/bin/bash
+        echo "Starting step 'sleep' for $(params.SLEEP_SECONDS) seconds..."
+        sleep $(params.SLEEP_SECONDS)
+        echo "Finished sleeping."
+      env:
+        - name: SLEEP_DURATION
+          value: "$(params.SLEEP_SECONDS)" 

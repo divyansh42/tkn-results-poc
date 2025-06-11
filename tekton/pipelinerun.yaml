@@ -1,0 +1,7 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: long-running-pipeline-run-
+spec:
+  pipelineRef:
+    name: long-running-pipeline 

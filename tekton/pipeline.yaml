@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: long-running-pipeline
+spec:
+  tasks:
+    - name: first-task
+      taskRef:
+        name: echo-and-sleep
+      params:
+        - name: MESSAGE
+          value: "This is the first task."
+        - name: SLEEP_SECONDS
+          value: "300"
+
+    - name: second-task
+      taskRef:
+        name: echo-and-sleep
+      params:
+        - name: MESSAGE
+          value: "This is the second task, a bit longer."
+        - name: SLEEP_SECONDS
+          value: "300"
+      runAfter:
+        - first-task
+
+    - name: third-task
+      taskRef:
+        name: echo-and-sleep
+      params:
+        - name: MESSAGE
+          value: "This is the third task, a long one."
+        - name: SLEEP_SECONDS
+          value: "300"
+      runAfter:
+        - second-task 
